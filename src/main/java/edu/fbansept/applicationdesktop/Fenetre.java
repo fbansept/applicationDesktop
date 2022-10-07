@@ -139,18 +139,12 @@ public class Fenetre extends JFrame {
 
         boxPrincipal.add(Box.createRigidArea(new Dimension(1,50)));
 
-        Box boxUtilisateur = Box.createHorizontalBox();
-        boxUtilisateur.setMaximumSize(new Dimension(500,30));
-        boxUtilisateur.add(new JLabel("Civilite"));
-        boxUtilisateur.add(selectCivilite);
-        boxUtilisateur.add(selectUtilisateur);
-        boxPrincipal.add(boxUtilisateur);
-
+        boxPrincipal.add(
+                Champs.generate("Civilite" , selectCivilite));
+        boxPrincipal.add(
+                Champs.generate("Utilisateur" , selectUtilisateur));
 
         panneau.add(boutonFormulaire, BorderLayout.SOUTH);
-
-
-
 
         setVisible(true);
     }
