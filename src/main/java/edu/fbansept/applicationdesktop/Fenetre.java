@@ -15,7 +15,7 @@ public class Fenetre extends JFrame {
         setSize(500,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        JPanel panneau = new JPanel();
+        JPanel panneau = new JPanel(new BorderLayout());
 
         setContentPane(panneau);
 
@@ -23,7 +23,7 @@ public class Fenetre extends JFrame {
 
         JButton bouton = new JButton("Fermer l'application");
 
-        panneau.add(bouton);
+
 
         bouton.addActionListener(e ->  {
 
@@ -47,7 +47,7 @@ public class Fenetre extends JFrame {
 
 
         JButton boutonChangeTheme = new JButton("Change theme");
-        panneau.add(boutonChangeTheme);
+
         boutonChangeTheme.addActionListener(e ->  {
             try {
                 if(themeSombre) {
@@ -67,7 +67,7 @@ public class Fenetre extends JFrame {
 
         String[] listeCivilite = {"M.","Me.","Mlle.", "Non précisé"};
         JComboBox<Object> selectCivilite = new JComboBox<>(listeCivilite);
-        panneau.add(selectCivilite);
+
 
         selectCivilite.addActionListener(e -> {
             JComboBox comboBox = (JComboBox) e.getSource();
@@ -112,7 +112,6 @@ public class Fenetre extends JFrame {
                 }
         );
 
-        panneau.add(selectUtilisateur);
 
         //------ bouton du formulaire -----
 
@@ -130,7 +129,28 @@ public class Fenetre extends JFrame {
 
         });
 
-        panneau.add(boutonFormulaire);
+        Box boxPrincipal = Box.createVerticalBox();
+        panneau.add(boxPrincipal, BorderLayout.CENTER);
+
+        Box boxMenu = Box.createHorizontalBox();
+        boxMenu.add(bouton);
+        boxMenu.add(boutonChangeTheme);
+        boxPrincipal.add(boxMenu);
+
+        boxPrincipal.add(Box.createRigidArea(new Dimension(1,50)));
+
+        Box boxUtilisateur = Box.createHorizontalBox();
+        boxUtilisateur.setMaximumSize(new Dimension(500,30));
+        boxUtilisateur.add(new JLabel("Civilite"));
+        boxUtilisateur.add(selectCivilite);
+        boxUtilisateur.add(selectUtilisateur);
+        boxPrincipal.add(boxUtilisateur);
+
+
+        panneau.add(boutonFormulaire, BorderLayout.SOUTH);
+
+
+
 
         setVisible(true);
     }
