@@ -1,12 +1,17 @@
 package edu.fbansept.applicationdesktop;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class Fenetre extends JFrame {
 
+    protected boolean themeSombre = false;
+
     public Fenetre() {
+
         setSize(500,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -40,6 +45,24 @@ public class Fenetre extends JFrame {
             }
         });
 
+
+        JButton boutonChangeTheme = new JButton("Change theme");
+        panneau.add(boutonChangeTheme);
+        boutonChangeTheme.addActionListener(e ->  {
+            try {
+                if(themeSombre) {
+                    themeSombre = false;
+                    UIManager.setLookAndFeel( new FlatLightLaf());
+                } else {
+                    themeSombre = true;
+                    UIManager.setLookAndFeel( new FlatDarculaLaf());
+                }
+                SwingUtilities.updateComponentTreeUI(this);
+            } catch( Exception ex ) {
+                System.err.println( "Failed to initialize LaF" );
+            }
+        });
+
         //-------- COMBOBOX --------------
 
         String[] listeCivilite = {"M.","Me.","Mlle.", "Non précisé"};
@@ -54,6 +77,7 @@ public class Fenetre extends JFrame {
         //---- autre exemple -----
 
         Utilisateur[] utilisateurs = {
+                null,
                 new Utilisateur("BANSEPT", "Franck"),
                 new Utilisateur("SNOW", "Jon"),
                 new Utilisateur("SMITH", "Steeve")
@@ -73,7 +97,11 @@ public class Fenetre extends JFrame {
                             final boolean cellHasFocus) {
                         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                         Utilisateur utilisateur = (Utilisateur) value;
-                        setText(utilisateur.getPrenom() + " " + utilisateur.getNom());
+                        if(utilisateur != null) {
+                            setText(utilisateur.getPrenom() + " " + utilisateur.getNom());
+                        } else {
+                            setText("Aucun");
+                        }
 //                        if(isSelected) {
 //                            setBackground(Color.GREEN);
 //                        } else {
@@ -86,10 +114,30 @@ public class Fenetre extends JFrame {
 
         panneau.add(selectUtilisateur);
 
+        //------ bouton du formulaire -----
+
+        JButton boutonFormulaire = new JButton("Envoyer");
+        boutonFormulaire.addActionListener(e -> {
+
+            if(selectUtilisateur.getSelectedItem() != null) {
+                Utilisateur utilisateur =
+                        (Utilisateur)selectUtilisateur.getSelectedItem();
+
+                System.out.println(
+                        selectCivilite.getSelectedItem() + utilisateur.getNom()
+                );
+            }
+
+        });
+
+        panneau.add(boutonFormulaire);
+
         setVisible(true);
     }
 
     public static void main(String[] args) {
+        FlatLightLaf.setup();
+        //FlatDarculaLaf.setup();
         new Fenetre();
     }
 }
